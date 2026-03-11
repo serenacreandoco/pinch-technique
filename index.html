@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technique 01: Pinching — @serenacreando</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F0E9DF;--bg2:#E8E0D4;--card:#FAF6F0;--ink:#1A1208;--ink2:#3A2818;--mid:#4A3728;--lo:#7A6858;--terra:#B85535;--t2:#D4845E;--bord:rgba(26,18,8,0.12);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Instrument Sans',sans-serif;font-weight:300;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--bg2);}::-webkit-scrollbar-thumb{background:var(--terra);}
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--terra);width:0%;z-index:1000;transition:width .1s;}
+nav{position:fixed;top:2px;left:0;right:0;z-index:500;padding:18px 56px;display:flex;align-items:center;justify-content:space-between;background:rgba(240,233,223,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bord);}
+.nav-logo{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--ink);}
+.nav-series{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--lo);display:flex;align-items:center;gap:12px;}
+.nav-series span{color:var(--terra);}
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
+.hero-left{background:var(--ink);padding:120px 56px 80px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
+.hero-clay-bg{position:absolute;inset:0;pointer-events:none;}
+.clay-circle{position:absolute;border-radius:50%;}
+.cc1{width:500px;height:500px;border:1px solid rgba(184,85,53,.15);top:-120px;right:-120px;}
+.cc2{width:320px;height:320px;border:1px solid rgba(184,85,53,.1);bottom:40px;right:60px;}
+.cc3{width:180px;height:180px;background:rgba(184,85,53,.06);bottom:120px;right:140px;}
+.hero-num{font-family:'Playfair Display',serif;font-size:200px;font-weight:900;color:rgba(240,233,223,.04);position:absolute;top:60px;left:40px;line-height:1;pointer-events:none;}
+.hero-left-content{position:relative;z-index:2;}
+.hero-series{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--terra);display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.hero-series::before{content:'';width:24px;height:1px;background:var(--terra);}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(52px,6vw,88px);font-weight:900;line-height:.92;letter-spacing:-.03em;color:var(--bg);margin-bottom:32px;}
+.hero-h1 em{display:block;font-style:italic;color:var(--terra);}
+.hero-sub{font-size:14px;color:rgba(240,233,223,.5);line-height:1.9;max-width:360px;border-left:2px solid rgba(184,85,53,.3);padding-left:18px;margin-bottom:40px;}
+.hero-facts{display:flex;gap:28px;}
+.hf{text-align:center;}
+.hf-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--terra);display:block;}
+.hf-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,233,223,.35);margin-top:2px;display:block;}
+.hero-right{background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:120px 56px 80px;position:relative;overflow:hidden;}
+.hero-right-bg{position:absolute;right:-80px;bottom:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(184,85,53,.1) 0%,transparent 65%);pointer-events:none;}
+.hero-quote{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,32px);font-style:italic;font-weight:400;color:var(--ink);line-height:1.4;margin-bottom:16px;}
+.hero-quote-source{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--lo);}
+.hero-divider{width:36px;height:1px;background:var(--terra);margin:28px 0;}
+.hero-intro{font-size:14px;color:var(--mid);line-height:1.95;}
+.ch-band{background:var(--ink2);padding:64px 56px;display:flex;align-items:center;gap:36px;}
+.ch-n{font-family:'Playfair Display',serif;font-size:clamp(60px,10vw,120px);font-weight:900;color:var(--terra);opacity:.5;line-height:1;flex-shrink:0;}
+.ch-text h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,44px);color:var(--bg);font-weight:400;line-height:1.1;}
+.ch-text h2 em{font-style:italic;color:var(--t2);}
+.ch-text p{font-size:13px;color:rgba(240,233,223,.45);margin-top:8px;line-height:1.8;max-width:580px;}
+.sec{padding:96px 56px;}
+.sec-inner{max-width:1100px;margin:0 auto;}
+.sec-tag{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--terra);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sec-tag::before{content:'';width:20px;height:1px;background:var(--terra);}
+.sec-h2{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,56px);font-weight:400;line-height:1.05;margin-bottom:16px;}
+.sec-h2 em{font-style:italic;color:var(--terra);}
+.rule{width:36px;height:2px;background:var(--terra);margin-bottom:28px;}
+.sec-lead{font-size:16px;color:var(--mid);line-height:1.9;max-width:680px;margin-bottom:48px;}
+.hist-timeline{position:relative;}
+.hist-timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--bord);transform:translateX(-50%);}
+.ht-row{display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;margin-bottom:48px;}
+.ht-left{text-align:right;padding-right:32px;}
+.ht-right{padding-left:32px;}
+.ht-dot{width:48px;height:48px;background:var(--card);border:2px solid var(--bord);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:10px;font-weight:700;color:var(--terra);position:relative;z-index:2;transition:.25s;cursor:default;}
+.ht-row:hover .ht-dot{background:var(--terra);color:var(--bg);border-color:var(--terra);}
+.ht-date{font-family:'Playfair Display',serif;font-size:18px;color:var(--terra);font-weight:700;display:block;margin-bottom:4px;}
+.ht-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--ink);font-weight:400;margin-bottom:6px;}
+.ht-desc{font-size:13px;color:var(--mid);line-height:1.8;}
+.science-strip{background:var(--ink);padding:80px 56px;}
+.ss-inner{max-width:1100px;margin:0 auto;}
+.ss-inner .sec-tag{color:var(--t2);}
+.ss-inner .sec-tag::before{background:var(--t2);}
+.ss-inner .sec-h2{color:var(--bg);}
+.ss-inner .rule{background:var(--t2);}
+.ss-inner .sec-lead{color:rgba(240,233,223,.5);}
+.science-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:40px;}
+.sci-card{background:rgba(240,233,223,.04);border:1px solid rgba(240,233,223,.08);padding:32px 28px;transition:.25s;}
+.sci-card:hover{background:rgba(240,233,223,.07);}
+.sci-icon{font-size:32px;display:block;margin-bottom:16px;}
+.sci-card h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--bg);font-weight:400;margin-bottom:10px;}
+.sci-card p{font-size:13px;color:rgba(240,233,223,.5);line-height:1.85;}
+.steps-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px;}
+.step-card{background:var(--card);border:1px solid var(--bord);padding:32px 28px;position:relative;overflow:hidden;transition:.25s;}
+.step-card:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(26,18,8,.08);}
+.step-num-bg{position:absolute;right:-12px;top:-12px;font-family:'Playfair Display',serif;font-size:96px;font-weight:900;color:rgba(184,85,53,.06);line-height:1;pointer-events:none;}
+.step-num{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--terra);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.step-num::after{content:'';flex:1;height:1px;background:rgba(184,85,53,.2);}
+.step-card h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;color:var(--ink);margin-bottom:10px;}
+.step-card p{font-size:13px;color:var(--mid);line-height:1.85;}
+.step-tip{margin-top:14px;padding:10px 14px;background:rgba(184,85,53,.07);border-left:2px solid var(--terra);font-size:12px;color:var(--mid);font-style:italic;}
+.mistakes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;}
+.mistake-card{padding:32px 28px;border:1px solid var(--bord);background:var(--card);position:relative;}
+.mistake-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--terra);opacity:.3;}
+.mistake-card.danger::before{background:#C43230;opacity:1;}
+.mistake-icon{font-size:28px;display:block;margin-bottom:14px;}
+.mistake-card h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:var(--ink);margin-bottom:8px;}
+.mistake-card p{font-size:13px;color:var(--mid);line-height:1.8;}
+.mistake-fix{margin-top:14px;padding:10px 14px;background:rgba(184,85,53,.06);border-left:2px solid rgba(184,85,53,.3);font-size:12px;color:var(--mid);}
+.mistake-fix strong{color:var(--terra);font-weight:500;}
+.japan-sec{background:var(--ink2);padding:96px 56px;}
+.japan-inner{max-width:1100px;margin:0 auto;}
+.japan-inner .sec-tag{color:var(--t2);}
+.japan-inner .sec-tag::before{background:var(--t2);}
+.japan-inner .sec-h2{color:var(--bg);}
+.japan-inner .rule{background:var(--t2);}
+.japan-inner .sec-lead{color:rgba(240,233,223,.5);}
+.japan-split{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;}
+.jp-panel{padding:40px 36px;border:1px solid rgba(240,233,223,.08);}
+.jp-panel.light{background:rgba(240,233,223,.04);}
+.jp-panel.accent{background:rgba(184,85,53,.12);border-color:rgba(184,85,53,.2);}
+.jp-panel h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:400;color:var(--bg);margin-bottom:6px;}
+.jp-sub{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--t2);margin-bottom:20px;display:block;}
+.jp-panel p{font-size:13px;color:rgba(240,233,223,.55);line-height:1.9;}
+.jp-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--bg);line-height:1.5;margin:20px 0 10px;padding-left:18px;border-left:2px solid var(--t2);}
+.jp-source{font-size:11px;color:rgba(240,233,223,.3);}
+.wabi-row{display:flex;gap:16px;margin-top:24px;}
+.wabi-tag{flex:1;background:rgba(240,233,223,.05);border:1px solid rgba(240,233,223,.1);padding:16px;text-align:center;}
+.wabi-tag dt{font-family:'Playfair Display',serif;font-size:20px;color:var(--t2);font-weight:400;margin-bottom:4px;}
+.wabi-tag dd{font-size:12px;color:rgba(240,233,223,.4);line-height:1.6;}
+.forms-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:48px;}
+.form-card{background:var(--card);border:1px solid var(--bord);padding:28px 22px;text-align:center;transition:.25s;cursor:default;}
+.form-card:hover{border-color:var(--terra);}
+.form-shape{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;border:2px solid rgba(184,85,53,.3);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.form-card h3{font-family:'Playfair Display',serif;font-size:15px;font-weight:400;color:var(--ink);margin-bottom:6px;}
+.form-card p{font-size:12px;color:var(--lo);line-height:1.7;}
+.info-box{background:rgba(184,85,53,.06);border:1px solid rgba(184,85,53,.2);border-left:3px solid var(--terra);padding:20px 24px;margin:28px 0;}
+.info-box strong{color:var(--terra);font-size:10px;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:6px;}
+.info-box p{font-size:13px;color:var(--mid);line-height:1.75;}
+.warn-box{background:rgba(200,50,30,.05);border:1px solid rgba(200,50,30,.2);border-left:3px solid #C43230;padding:20px 24px;margin:28px 0;}
+.warn-box strong{color:#C43230;font-size:10px;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:6px;}
+.warn-box p{font-size:13px;color:var(--mid);line-height:1.75;}
+.ticker-wrap{background:var(--terra);overflow:hidden;padding:14px 0;}
+.ticker{display:flex;animation:tick 50s linear infinite;white-space:nowrap;}
+.ticker span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.9);padding:0 48px;}
+.ticker span::before{content:'◆';margin-right:48px;opacity:.5;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.closing{background:var(--ink);padding:100px 56px;text-align:center;position:relative;overflow:hidden;}
+.closing-glow{position:absolute;inset:0;background:radial-gradient(ellipse 55% 55% at 50% 50%,rgba(184,85,53,.1) 0%,transparent 65%);pointer-events:none;}
+.closing-inner{position:relative;z-index:2;max-width:680px;margin:0 auto;}
+.closing h2{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);font-weight:400;color:var(--bg);margin-bottom:20px;line-height:1.1;}
+.closing h2 em{font-style:italic;color:var(--t2);}
+.closing p{font-size:15px;color:rgba(240,233,223,.5);line-height:1.9;margin-bottom:36px;}
+.next-btn{display:inline-flex;align-items:center;gap:12px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--t2);border:1px solid rgba(212,132,94,.3);padding:14px 28px;text-decoration:none;transition:.25s;}
+.next-btn:hover{background:rgba(212,132,94,.1);}
+.closing-brand{margin-top:48px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:rgba(240,233,223,.2);}
+footer{padding:28px 56px;background:var(--ink);border-top:1px solid rgba(240,233,223,.06);display:flex;justify-content:space-between;align-items:center;}
+.f-brand{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--t2);}
+.f-note{font-size:10px;letter-spacing:.12em;color:rgba(240,233,223,.2);}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}.rd4{transition-delay:.4s;}
+@media(max-width:900px){
+  nav{padding:14px 20px;}
+  .nav-series{display:none;}
+  .hero{grid-template-columns:1fr;}
+  .hero-left{padding:100px 24px 60px;min-height:55vh;}
+  .hero-right{padding:56px 24px;}
+  .sec,.ch-band,.science-strip,.japan-sec,.closing,footer{padding-left:24px;padding-right:24px;}
+  .hist-timeline::before{left:24px;transform:none;}
+  .ht-row{grid-template-columns:48px 1fr;}
+  .ht-left{display:none;}
+  .ht-right{padding-left:20px;}
+  .science-grid,.mistakes-grid,.forms-grid,.japan-split,.steps-wrap{grid-template-columns:1fr;}
+  .wabi-row{flex-direction:column;}
+  .ch-band{flex-direction:column;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<nav>
+  <div class="nav-logo">@serenacreando</div>
+  <div class="nav-series">Hand-Building Series <span>01 / 04</span> Pinching</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-clay-bg">
+      <div class="clay-circle cc1"></div>
+      <div class="clay-circle cc2"></div>
+      <div class="clay-circle cc3"></div>
+    </div>
+    <div class="hero-num">01</div>
+    <div class="hero-left-content">
+      <div class="hero-series">Hand-Building Series · Technique 01</div>
+      <h1 class="hero-h1">The<em>Pinch</em>Technique</h1>
+      <p class="hero-sub">The oldest technique in the world. Before wheels, tools, and modern kilns — just clay, thumbs, and time.</p>
+      <div class="hero-facts">
+        <div class="hf"><span class="hf-num">20,000</span><span class="hf-label">Years old</span></div>
+        <div class="hf"><span class="hf-num">0</span><span class="hf-label">Tools needed</span></div>
+        <div class="hf"><span class="hf-num">∞</span><span class="hf-label">Forms possible</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-bg"></div>
+    <p class="hero-quote">"The pinch pot is where every great ceramicist begins — and where the love of clay is born."</p>
+    <p class="hero-quote-source">— @serenacreando</p>
+    <div class="hero-divider"></div>
+    <p class="hero-intro">Pinching is the first technique every ceramicist learns — and often the last one they truly master. There is nowhere to hide in a pinch pot. The walls reveal your pressure, your pace, your attention. It is the most honest form in ceramics — and the most ancient one on Earth.</p>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>Oldest ceramics on Earth: 20,000 years ago — Xianrendong Cave, China</span>
+    <span>Zero tools required to make a pinch pot</span>
+    <span>The Japanese Raku tea bowl — born from pinching, 1580 AD</span>
+    <span>Hunter-gatherers used pinch pots 10,000 years before agriculture existed</span>
+    <span>Wabi-sabi: the Japanese philosophy that made imperfection sacred</span>
+    <span>The Raku family has passed pinching down for 16 consecutive generations</span>
+    <span>Oldest ceramics on Earth: 20,000 years ago — Xianrendong Cave, China</span>
+    <span>Zero tools required to make a pinch pot</span>
+    <span>The Japanese Raku tea bowl — born from pinching, 1580 AD</span>
+    <span>Hunter-gatherers used pinch pots 10,000 years before agriculture existed</span>
+    <span>Wabi-sabi: the Japanese philosophy that made imperfection sacred</span>
+    <span>The Raku family has passed pinching down for 16 consecutive generations</span>
+  </div>
+</div>
+
+<!-- CHAPTER I: HISTORY -->
+<div class="ch-band reveal">
+  <div class="ch-n">I</div>
+  <div class="ch-text">
+    <h2>A <em>20,000-Year</em> History</h2>
+    <p>Pinching is not a technique humans invented — it's one they discovered. Wherever there was clay and a need, hands made the same movement across every continent.</p>
+  </div>
+</div>
+
+<section class="sec" id="history">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Origins</div>
+    <h2 class="sec-h2 reveal">The <em>oldest</em> ceramic tradition on Earth</h2>
+    <div class="rule reveal"></div>
+    <p class="sec-lead reveal">Pinching predates agriculture, writing, and the wheel — by thousands of years. Every civilization that ever touched clay discovered the same movement: thumb in the center, fingers on the outside, slow rotation.</p>
+
+    <div class="hist-timeline">
+      <div class="ht-row reveal">
+        <div class="ht-left">
+          <span class="ht-date">~20,000 BC</span>
+          <h3 class="ht-title">Xianrendong Cave, China</h3>
+          <p class="ht-desc">The oldest known pottery on Earth — fragments of a vessel approximately 20cm tall found in Jiangxi Province. An international team from Harvard, Peking University, and Tübingen used radiocarbon dating to confirm it. Scorch marks on the exterior suggest it was used for cooking — at the peak of the last ice age, when food was scarce and every calorie counted.</p>
+        </div>
+        <div class="ht-dot">BC</div>
+        <div class="ht-right"></div>
+      </div>
+
+      <div class="ht-row reveal">
+        <div class="ht-left"></div>
+        <div class="ht-dot">BC</div>
+        <div class="ht-right">
+          <span class="ht-date">~9,000 BC</span>
+          <h3 class="ht-title">Independent discovery, everywhere</h3>
+          <p class="ht-desc">Functional pinched pottery appears independently across the Near East, sub-Saharan Africa, South America, and the Pacific — all around the same era. No cultural exchange. Just humans on every continent solving the same problem: how do you carry, store, and cook things? The answer, universally, was clay shaped by hand.</p>
+        </div>
+      </div>
+
+      <div class="ht-row reveal">
+        <div class="ht-left">
+          <span class="ht-date">4,000–3,000 BC</span>
+          <h3 class="ht-title">Egypt — Naqada Period</h3>
+          <p class="ht-desc">Ancient Egyptians shaped pots from Nile clay and desert Marl clay using the pinch technique. Archaeologists found vessels from this period with remarkably thin walls — so refined they rival contemporary handbuilding work. These weren't rough survival objects. They were craft, with intention.</p>
+        </div>
+        <div class="ht-dot">BC</div>
+        <div class="ht-right"></div>
+      </div>
+
+      <div class="ht-row reveal">
+        <div class="ht-left"></div>
+        <div class="ht-dot">BC</div>
+        <div class="ht-right">
+          <span class="ht-date">Bronze Age</span>
+          <h3 class="ht-title">Europe — Pinching meets Coiling</h3>
+          <p class="ht-desc">Evidence from Moravia (Czech Republic) and Hungary shows pinching and coiling being combined during the Bronze Age. This hybrid technique — pinched base, coiled walls, pinched joins — became the dominant handbuilding system for large vessels across the ancient world, and is still used today.</p>
+        </div>
+      </div>
+
+      <div class="ht-row reveal">
+        <div class="ht-left">
+          <span class="ht-date">1580 AD</span>
+          <h3 class="ht-title">Japan — The Raku Bowl is Born</h3>
+          <p class="ht-desc">Tea master Sen no Rikyū commissions tile-maker Chōjirō to create bowls for the wabi-styled tea ceremony. Chōjirō forms each piece by hand using the tezukune technique — palms and thumbs only, no wheel, no tools. The resulting Raku chawan become the most revered ceramics in Japanese history. The Raku family carries this tradition through 16 consecutive generations to today.</p>
+        </div>
+        <div class="ht-dot">AD</div>
+        <div class="ht-right"></div>
+      </div>
+
+      <div class="ht-row reveal">
+        <div class="ht-left"></div>
+        <div class="ht-dot">→</div>
+        <div class="ht-right">
+          <span class="ht-date">Today</span>
+          <h3 class="ht-title">The foundation of every ceramics course in the world</h3>
+          <p class="ht-desc">In virtually every studio on Earth, the first thing taught is the pinch pot. Not because it's simple — but because it teaches everything that matters: pressure, rotation, wall thickness, clay behavior, patience. It is simultaneously the oldest technique and the most honest diagnostic tool a ceramicist has.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box reveal">
+      <strong>★ Fun fact that will blow your mind</strong>
+      <p>Hunter-gatherers in East Asia made pinch pots for approximately 10,000 years before they became farmers. Pottery didn't follow agriculture — here, it preceded it by a full 10 millennia. One researcher suggested the pots may have been used not just for cooking, but for brewing alcohol — which, at the peak of an ice age, honestly makes complete sense.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER II: SCIENCE -->
+<div class="ch-band reveal">
+  <div class="ch-n">II</div>
+  <div class="ch-text">
+    <h2>The <em>Science</em> of Pinching</h2>
+    <p>What is actually happening inside the clay when you pinch? Understanding the physics makes you a dramatically better ceramicist.</p>
+  </div>
+</div>
+
+<section class="science-strip" id="science">
+  <div class="ss-inner">
+    <div class="sec-tag reveal">Why it works</div>
+    <h2 class="sec-h2 reveal">What's happening <em>inside</em> the clay</h2>
+    <div class="rule reveal"></div>
+    <p class="sec-lead reveal">Clay is a crystalline material suspended in water. Every pinch aligns particles, compresses structure, and moves moisture through the wall. Understanding this transforms how you work.</p>
+    <div class="science-grid">
+      <div class="sci-card reveal rd1">
+        <span class="sci-icon">🔬</span>
+        <h3>Particle alignment</h3>
+        <p>Clay is made of flat, plate-like crystalline particles. When you pinch and compress, these plates align in the direction of pressure — like stacking coins. Aligned particles create stronger walls that resist cracking. This is why compressed clay is structurally tougher than just pushed clay.</p>
+      </div>
+      <div class="sci-card reveal rd2">
+        <span class="sci-icon">💧</span>
+        <h3>Water migration</h3>
+        <p>Clay's workability comes from water between the particles. As you pinch, you push water through the wall. Too fast or too much water at once disrupts the balance — clay becomes sticky, loses structural memory, and cracks during drying as moisture escapes unevenly. Pace matters more than pressure.</p>
+      </div>
+      <div class="sci-card reveal rd3">
+        <span class="sci-icon">🌡️</span>
+        <h3>Body heat & working time</h3>
+        <p>Your hands are warm. Prolonged contact with one section dries it faster than the rest. Working too slowly — returning to the same spot repeatedly — overworks it. Experienced ceramicists keep rotation constant and rest the piece on a bat when not actively forming it.</p>
+      </div>
+      <div class="sci-card reveal rd1">
+        <span class="sci-icon">⚖️</span>
+        <h3>Stress memory in clay</h3>
+        <p>Clay resists extreme deformation and wants to return toward its original form. Walls thinned too quickly crack during drying because the clay is under stress it can't accommodate. Working in gradual passes — thinner each round — releases that stress incrementally and safely.</p>
+      </div>
+      <div class="sci-card reveal rd2">
+        <span class="sci-icon">🔄</span>
+        <h3>Why rotation is structural</h3>
+        <p>Rotation isn't aesthetic — it's engineering. Pinching the same spot twice applies double compression to one area and none to the opposite. The result: uneven thickness, stress points, asymmetric walls that crack during drying or warp in the kiln. Rotation = even distribution of force.</p>
+      </div>
+      <div class="sci-card reveal rd3">
+        <span class="sci-icon">📐</span>
+        <h3>The ideal wall thickness</h3>
+        <p>Target approximately 6mm — roughly the width of a pinky finger. Thinner: thermal shock risk in the kiln. Thicker: uneven drying, extra weight, warping. The base should be slightly thicker (~8–10mm) to anchor the form and prevent cracking at the floor-to-wall stress point.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER III: TECHNIQUE -->
+<div class="ch-band reveal">
+  <div class="ch-n">III</div>
+  <div class="ch-text">
+    <h2>The <em>Technique</em> — Step by Step</h2>
+    <p>Eight steps. No shortcuts. The key is slow, deliberate pressure and constant rotation from the very first pinch.</p>
+  </div>
+</div>
+
+<section class="sec" id="technique">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">How to do it</div>
+    <h2 class="sec-h2 reveal">From <em>ball of clay</em> to finished form</h2>
+    <div class="rule reveal"></div>
+    <p class="sec-lead reveal">Start with 200–300g of clay (roughly the size of a tangerine). Wedge it first to remove air pockets. Cold hands are an actual advantage — they slow drying and give you more working time.</p>
+
+    <div class="steps-wrap">
+      <div class="step-card reveal rd1">
+        <div class="step-num-bg">1</div>
+        <div class="step-num">Step 01</div>
+        <h3>Form a perfect sphere</h3>
+        <p>Roll the clay into a smooth, crack-free ball. Any crack on the surface now will propagate — it will not heal itself. The rounder and more even the ball, the more even your starting wall thickness will be. This step sets the quality ceiling for everything that follows.</p>
+        <div class="step-tip">✦ A crack-free ball is the single most important preparation step.</div>
+      </div>
+      <div class="step-card reveal rd2">
+        <div class="step-num-bg">2</div>
+        <div class="step-num">Step 02</div>
+        <h3>Thumb straight down, centered</h3>
+        <p>Cup the ball in one hand. Press your dominant thumb straight down into the exact center — not at an angle. Push slowly until you feel your supporting palm resist, leaving at least 1cm of clay at the base. This becomes your floor. It must stay slightly thicker than the walls throughout.</p>
+        <div class="step-tip">✦ Off-center pressure = off-center form. This never self-corrects.</div>
+      </div>
+      <div class="step-card reveal rd3">
+        <div class="step-num-bg">3</div>
+        <div class="step-num">Step 03</div>
+        <h3>First pass — open the form</h3>
+        <p>Thumb inside, fingers outside. Use the length of your index finger — not just the tip. Pinch gently in small increments (about 5mm rotation steps) from the bottom upward. Keep the rim thick and closed at this stage — it gives you structural support as the walls rise.</p>
+        <div class="step-tip">✦ "Force of a goldfish, not Jaws." — Derek Weisberg, ceramics instructor</div>
+      </div>
+      <div class="step-card reveal rd4">
+        <div class="step-num-bg">4</div>
+        <div class="step-num">Step 04</div>
+        <h3>Rotate constantly</h3>
+        <p>Every pinch, rotate a little. Every rotation, pinch a little. These two actions should be inseparable — a rhythm, not a sequence. You are working the entire circumference evenly on each pass. Think of it like turning a globe: every meridian gets equal attention before you start the next round.</p>
+        <div class="step-tip">✦ If you're returning to the same spot, speed up your rotation. You're overworking it.</div>
+      </div>
+      <div class="step-card reveal rd1">
+        <div class="step-num-bg">5</div>
+        <div class="step-num">Step 05</div>
+        <h3>Switch hand positions</h3>
+        <p>Once the basic form is opened, switch: fingers inside, thumb outside. This gives you a different pressure angle and helps thin walls more evenly. Work upward from the base again — drag clay upward rather than pushing outward. Outward pressure widens the form faster than you want.</p>
+        <div class="step-tip">✦ Thinning from the inside gives you more control than thinning from the outside.</div>
+      </div>
+      <div class="step-card reveal rd2">
+        <div class="step-num-bg">6</div>
+        <div class="step-num">Step 06</div>
+        <h3>Multiple gradual passes</h3>
+        <p>Never try to reach final wall thickness in one pass. Make 3–4 complete circuits, getting slightly thinner each time. This distributes stress gradually. After each full circuit, press gently around the full circumference to check evenness by feel — not just by sight.</p>
+        <div class="step-tip">✦ Target: ~6mm / ¼ inch. Consistent, not perfect.</div>
+      </div>
+      <div class="step-card reveal rd3">
+        <div class="step-num-bg">7</div>
+        <div class="step-num">Step 07</div>
+        <h3>Refine the rim last</h3>
+        <p>The rim is always the last thing you thin. Work it in small, even pinches between thumb and index finger. It should end up slightly thinner than the walls for aesthetics, but never paper-thin — it needs structural integrity. Compress it gently between damp fingers to smooth and strengthen the edge.</p>
+        <div class="step-tip">✦ A compressed rim is stronger and far less likely to crack during drying.</div>
+      </div>
+      <div class="step-card reveal rd4">
+        <div class="step-num-bg">8</div>
+        <div class="step-num">Step 08</div>
+        <h3>Rest, assess, refine</h3>
+        <p>Set the piece down and observe it from all angles. Let it stiffen slightly (5–10 min), then refine. Once leather-hard, you can scrape with a kidney rib, add texture, or paddle walls to change the silhouette. Then slow-dry under loose plastic for at least 3 days.</p>
+        <div class="step-tip">✦ Stepping away is part of the technique. Fresh eyes catch what working hands miss.</div>
+      </div>
+    </div>
+
+    <div class="info-box reveal" style="margin-top:40px;">
+      <strong>Joining two pinch pots — for closed or larger forms</strong>
+      <p>Make two matching pinch pots of equal size. Allow both to stiffen to leather-hard. Score both rims generously with a needle tool. Apply slip to both scored surfaces. Press firmly together, rotate slightly to seat the join. Smooth the exterior seam and reinforce the interior join with a thin coil of soft clay, blended inward with a finger. This technique was used for closed vessels in ancient cultures on every continent — done correctly, the join is the strongest point on the piece.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER IV: MISTAKES -->
+<div class="ch-band reveal">
+  <div class="ch-n">IV</div>
+  <div class="ch-text">
+    <h2>The <em>6 Classic Mistakes</em></h2>
+    <p>Every ceramicist makes these. The ones who progress fastest recognize them while they're happening — not after the kiln.</p>
+  </div>
+</div>
+
+<section class="sec" id="mistakes">
+  <div class="sec-inner">
+    <div class="mistakes-grid">
+      <div class="mistake-card danger reveal rd1">
+        <span class="mistake-icon">💥</span>
+        <h3>Pinching too fast</h3>
+        <p>Rapid, impatient pinching creates uneven thinning and stress fractures that don't show up until drying — or worse, in the kiln.</p>
+        <div class="mistake-fix"><strong>Fix:</strong> Slow down. Each pinch is a decision. If you're rushing, you're not feeling the clay.</div>
+      </div>
+      <div class="mistake-card reveal rd2">
+        <span class="mistake-icon">🎯</span>
+        <h3>Focusing on one spot</h3>
+        <p>Returning to the same section creates a thin patch surrounded by thick walls. The piece loses integrity and usually collapses or cracks at that junction.</p>
+        <div class="mistake-fix"><strong>Fix:</strong> Constant rotation. Every single pinch in a new position, every time.</div>
+      </div>
+      <div class="mistake-card reveal rd3">
+        <span class="mistake-icon">💧</span>
+        <h3>Too much water</h3>
+        <p>Adding water feels like lubrication but it removes structural memory. Too much creates sticky clay that cracks dramatically during drying as moisture escapes unevenly.</p>
+        <div class="mistake-fix"><strong>Fix:</strong> Water is for smoothing visible surface cracks only — not general process lubrication.</div>
+      </div>
+      <div class="mistake-card reveal rd1">
+        <span class="mistake-icon">🔝</span>
+        <h3>Thinning the rim first</h3>
+        <p>A thin rim early in the process means no structural support for the rising walls. The form flares, collapses, or tears before you've finished building.</p>
+        <div class="mistake-fix"><strong>Fix:</strong> Rim is the very last thing you thin. It's your architectural header — treat it like one.</div>
+      </div>
+      <div class="mistake-card reveal rd2">
+        <span class="mistake-icon">⊙</span>
+        <h3>Off-center initial press</h3>
+        <p>If your thumb enters off-center, one side starts thicker than the other. This asymmetry compounds with every pass. It never self-corrects — only gets more pronounced.</p>
+        <div class="mistake-fix"><strong>Fix:</strong> Feel for center with both thumbs before pressing. Take a moment. It's worth it.</div>
+      </div>
+      <div class="mistake-card reveal rd3">
+        <span class="mistake-icon">☀️</span>
+        <h3>Drying too fast</h3>
+        <p>Sunlight, heaters, or airflow cause the exterior to dry faster than the interior. The tension between wet inside and dry outside creates cracks — always along the thinnest walls.</p>
+        <div class="mistake-fix"><strong>Fix:</strong> Cover loosely with plastic. Slow and even. No heat sources, ever.</div>
+      </div>
+    </div>
+
+    <div class="warn-box reveal">
+      <strong>⚠ The honest truth about pinching</strong>
+      <p>No wheel, no molds, no tools — just your hands and the clay. That's exactly what makes pinching so powerful as a starting point. You develop an instinct for wall thickness, moisture, and form that no machine can give you. Every technique you learn after this will be better because of what your hands learned here first.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER V: JAPAN -->
+<div class="ch-band reveal">
+  <div class="ch-n">V</div>
+  <div class="ch-text">
+    <h2><em>Japan</em> & the Philosophy of Imperfection</h2>
+    <p>No culture elevated the pinch pot into more profound artistic and spiritual territory than 16th-century Japan. And what they discovered still applies to your studio today.</p>
+  </div>
+</div>
+
+<section class="japan-sec" id="japan">
+  <div class="japan-inner">
+    <div class="sec-tag reveal">The highest expression</div>
+    <h2 class="sec-h2 reveal">Raku ware & <em>wabi-sabi</em></h2>
+    <div class="rule reveal"></div>
+    <p class="sec-lead reveal">In 1580, tea master Sen no Rikyū asked tile-maker Chōjirō to create tea bowls for the Japanese tea ceremony. The instruction was radical for its time: no wheel. Only hands. The resulting bowls, hand-pinched using the tezukune method, became the most revered ceramics in Japanese history.</p>
+
+    <div class="japan-split">
+      <div class="jp-panel light reveal rd1">
+        <h3>Raku Ware (楽焼)</h3>
+        <span class="jp-sub">Since 1580 · 16 generations · Tezukune method</span>
+        <p>Raku chawans are formed by compressing a dense disk of clay between the palms and thumbs — the tezukune technique. No wheel, no molds. Each bowl is intentionally irregular, designed to nestle naturally in two cupped hands and feel warm with tea inside.</p>
+        <p style="margin-top:14px;">The word "Raku" (楽, meaning enjoyment) was given as a seal to Chōjirō's son by ruler Toyotomi Hideyoshi. It became the family name. The Raku family has produced hand-formed tea bowls for 16 consecutive generations — each generation's pieces identifiable by subtle differences in hand-position habits and material choices.</p>
+        <div class="jp-quote">"The goal was to create bowls which would nestle in the palms of the drinker's hands."</div>
+        <span class="jp-source">— Chōjirō's design philosophy, historical records</span>
+      </div>
+      <div class="jp-panel accent reveal rd2">
+        <h3>Wabi-Sabi (侘寂)</h3>
+        <span class="jp-sub">The philosophy that transformed imperfection into beauty</span>
+        <p>Wabi-sabi is rooted in Zen Buddhism and finds beauty in imperfection, impermanence, and incompleteness. In ceramics: the fingerprint in the clay is not a flaw — it is a record of the maker's presence. The slight asymmetry is not a mistake — it is proof of the human hand at work.</p>
+        <p style="margin-top:14px;">A wheel-thrown bowl is too perfect — too mechanical. A pinched bowl carries time, decisions, and humanity in its surface. This is precisely why pinching became the choice for Japanese tea ceremony ceramics — and why "Raku first" is the highest compliment in Japanese ceramics tradition.</p>
+        <div class="wabi-row">
+          <dl class="wabi-tag"><dt>侘 Wabi</dt><dd>Rustic simplicity, understated elegance</dd></dl>
+          <dl class="wabi-tag"><dt>寂 Sabi</dt><dd>Beauty of the imperfect, aged, and worn</dd></dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box reveal" style="background:rgba(240,233,223,.05);border-color:rgba(240,233,223,.15);border-left-color:var(--t2);margin-top:28px;">
+      <strong style="color:var(--t2);">★ The ranking that says everything</strong>
+      <p style="color:rgba(240,233,223,.55);">There is a famous Japanese ceramics saying: "Raku first, Hagi second, Karatsu third." In a culture obsessed with technical refinement, the hand-pinched, wheel-free Raku tradition — deliberately irregular, intentionally imperfect — is ranked above all others as the highest art form. The fingerprints are the point.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER VI: FORMS -->
+<div class="ch-band reveal">
+  <div class="ch-n">VI</div>
+  <div class="ch-text">
+    <h2>What You Can <em>Actually Make</em></h2>
+    <p>Pinching is not just for small bowls. Once you understand wall thickness and form, it scales dramatically.</p>
+  </div>
+</div>
+
+<section class="sec" id="forms">
+  <div class="sec-inner">
+    <div class="forms-grid">
+      <div class="form-card reveal rd1">
+        <div class="form-shape">🥣</div>
+        <h3>Bowls & Cups</h3>
+        <p>The classic starting point. Open, stable, forgiving of slight asymmetry — perfect for a first pinch pot.</p>
+      </div>
+      <div class="form-card reveal rd2">
+        <div class="form-shape">⚱️</div>
+        <h3>Closed Vessels</h3>
+        <p>Join two pinch pots rim-to-rim for spheres, bulbous vases, and sealed forms. Score, slip, smooth.</p>
+      </div>
+      <div class="form-card reveal rd3">
+        <div class="form-shape">🍵</div>
+        <h3>Tea Bowls (Chawan)</h3>
+        <p>The Raku tradition. Intentionally irregular, designed to feel perfect in two cupped hands.</p>
+      </div>
+      <div class="form-card reveal rd4">
+        <div class="form-shape">🌿</div>
+        <h3>Sculptural Forms</h3>
+        <p>Organic shapes, faces, figurative elements. Pinching is the foundation of ceramic sculpture at any scale.</p>
+      </div>
+      <div class="form-card reveal rd1">
+        <div class="form-shape">🧩</div>
+        <h3>Modular Units</h3>
+        <p>Multiple pinch pots joined together. Used in ancient traditions worldwide and in contemporary studio practice.</p>
+      </div>
+      <div class="form-card reveal rd2">
+        <div class="form-shape">🪴</div>
+        <h3>Small Planters</h3>
+        <p>The organic irregularity of pinched forms suits the natural character of plants beautifully.</p>
+      </div>
+      <div class="form-card reveal rd3">
+        <div class="form-shape">💫</div>
+        <h3>Jewelry & Objects</h3>
+        <p>Pendants, small dishes, incense holders, rings. The technique scales all the way down to miniature.</p>
+      </div>
+      <div class="form-card reveal rd4">
+        <div class="form-shape">🌀</div>
+        <h3>Pinch + Coil Hybrid</h3>
+        <p>Pinched base, coiled walls. The combination used by ancient cultures on every continent for 10,000 years.</p>
+      </div>
+    </div>
+
+    <div class="info-box reveal" style="margin-top:40px;">
+      <strong>Why this technique makes every other technique better</strong>
+      <p>Every technique you learn after pinching will be stronger for having started here. Pinching teaches clay behavior, wall thickness intuition, moisture management, and three-dimensional form awareness — the four fundamentals that underlie all handbuilding. Your slabs will be more even. Your coils will join better. Your hollowing will be more controlled. The fingerprints you put in a pinch pot are not evidence of inexperience. They are 20,000 years of human hands doing exactly the same thing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-glow"></div>
+  <div class="closing-inner reveal">
+    <h2>The most <em>honest form</em> in ceramics</h2>
+    <p>The fingerprints you leave in a pinch pot are not imperfections. They are the record of you — your pressure, your pace, your decisions at that moment. This is 20,000 years of human hands making the same movement and finding something true in it. Now it's your turn.</p>
+<div class="closing-brand">@serenacreando · Hand-Building Series · Technique 01 / 04</div>
+  </div>
+</div>
+
+<footer>
+  <span class="f-brand">@serenacreando</span>
+  <span class="f-note">Hand-Building Series · Technique 01 — Pinching</span>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  document.getElementById('prog').style.width=((d.scrollTop/(d.scrollHeight-d.clientHeight))*100)+'%';
+});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
